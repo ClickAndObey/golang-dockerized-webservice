@@ -7,6 +7,7 @@ MINOR_VERSION := 0
 BUILD_VERSION ?= $(USER)
 VERSION := $(MAJOR_VERSION).$(MINOR_VERSION).$(BUILD_VERSION)
 
+PACKAGE_PREFIX := github.com/clickandobey/golang-dockerized-webservice
 ORGANIZATION := clickandobey
 SERVICE_NAME := golang-dockerized-webservice
 
@@ -67,10 +68,15 @@ test: unit-test integration-test
 test-docker: unit-test-docker integration-test-docker
 
 unit-test:
-	@echo Implement Me!
+	@go test ${PACKAGE_PREFIX}/... -cover
 
 unit-test-docker:
-	@echo Implement Me!
+	@docker run \
+		--rm \
+		-v `pwd`:/test \
+		golang:1.15-buster \
+			/bin/bash -c \
+				"cd /test; go test github.com/clickandobey/golang-dockerized-webservice/... -cover"
 
 integration-test: docker-run-webservice
 	@echo Implement Me!
