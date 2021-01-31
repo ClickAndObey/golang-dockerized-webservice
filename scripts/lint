@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+lint() {
+  find "${1}" -name "*.go" -exec gofmt -s -w {} \;
+}
+
+lint "${1}"
