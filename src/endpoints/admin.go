@@ -3,7 +3,7 @@ package endpoints
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/clickandobey/golang-dockerized-webservice/admin"
+	"github.com/clickandobey/golang-dockerized-webservice/src/admin"
 	"log"
 	"net/http"
 )
