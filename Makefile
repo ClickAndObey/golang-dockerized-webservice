@@ -16,6 +16,8 @@ APP_PORT := 9001
 APP_CONTAINER_NAME := ${APP_IMAGE_NAME}
 
 ROOT_DIRECTORY := `pwd`
+TEST_DIRECTORY := ${ROOT_DIRECTORY}/test
+TEST_PYTHON_DIRECTORY := $(TEST_DIRECTORY)/python
 
 ifneq ($(DEBUG),)
   INTERACTIVE=--interactive
@@ -78,8 +80,14 @@ unit-test-docker:
 			/bin/bash -c \
 				"cd /test; go test github.com/clickandobey/golang-dockerized-webservice/... -cover"
 
-integration-test: docker-run-webservice
-	@echo Implement Me!
+integration-test: stop-webservice docker-run-webservice setup-test-env
+	@cd $(TEST_PYTHON_DIRECTORY); \
+	pipenv run python -m pytest \
+		--durations=10 \
+		${TEST_OUTPUT_FLAG} \
+		${FAILURE_FLAG} \
+		-m 'integration ${TEST_STRING}' \
+		.
 
 integration-test-docker: docker-run-webservice
 	@echo Implement Me!
@@ -116,3 +124,11 @@ clean:
 	@echo Removing Build Targets...
 	@rm -rf ${ROOT_DIRECTORY}/build
 	@echo Removed Build Targets.
+
+setup-test-env:
+	@cd ${TEST_PYTHON_DIRECTORY}; \
+	pipenv install --dev
+
+update-python-dependencies:
+	@cd ${TEST_PYTHON_DIRECTORY}; \
+	pipenv lock
