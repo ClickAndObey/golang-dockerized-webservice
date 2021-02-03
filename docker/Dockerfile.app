@@ -2,9 +2,7 @@ FROM golang:1.15-buster as build-base
 
 WORKDIR /build
 
-COPY admin /build/admin
-COPY endpoints /build/endpoints
-COPY webservice /build/webservice
+COPY src /build/src
 COPY go.mod /build
 COPY main.go /build
 

@@ -5,7 +5,7 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/clickandobey/golang-dockerized-webservice/endpoints"
+	"github.com/clickandobey/golang-dockerized-webservice/src/endpoints"
 )
 
 const (
