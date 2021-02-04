@@ -2,8 +2,8 @@ package admin
 
 type Configuration struct {
 	Environment string
-	Version string
-	Debug bool
+	Version     string
+	Debug       bool
 }
 
 func GetConfiguration() Configuration {

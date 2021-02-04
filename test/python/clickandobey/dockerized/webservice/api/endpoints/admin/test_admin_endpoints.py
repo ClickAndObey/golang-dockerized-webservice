@@ -15,7 +15,7 @@ class TestAdminEndpoints:
     Class used to test the administrative endpoints for the api.
     """
 
-    __ENVIRONMENT_ENV_VARIABLE = "environment"
+    __ENVIRONMENT_ENV_VARIABLE = "ENVIRONMENT"
     __DEFAULT_ENVIRONMENT_VALUE = "localhost"
     __ENVIRONMENT = os.getenv(
         __ENVIRONMENT_ENV_VARIABLE,
