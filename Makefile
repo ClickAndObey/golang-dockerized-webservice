@@ -1,4 +1,4 @@
-.PHONY: build
+.PHONY: build test
 
 all: clean lint test
 
@@ -14,6 +14,9 @@ SERVICE_NAME := golang-dockerized-webservice
 APP_IMAGE_NAME := ${ORGANIZATION}-${SERVICE_NAME}-app
 APP_PORT := 9001
 APP_CONTAINER_NAME := ${APP_IMAGE_NAME}
+
+TEST_IMAGE_NAME := ${ORGANIZATION}-${SERVICE_NAME}-test
+TEST_CONTAINER_NAME := ${TEST_IMAGE_NAME}
 
 ROOT_DIRECTORY := `pwd`
 TEST_DIRECTORY := ${ROOT_DIRECTORY}/test
@@ -66,6 +69,13 @@ stop-webservice:
 
 # Testing
 
+build-test-docker: docker/Dockerfile.test $(shell find test/python -name "*")
+	@docker build \
+		-t $(TEST_IMAGE_NAME) \
+		-f docker/Dockerfile.test \
+		.
+	@touch build-test-docker
+
 test: unit-test integration-test
 test-docker: unit-test-docker integration-test-docker
 
@@ -89,8 +99,20 @@ integration-test: stop-webservice docker-run-webservice setup-test-env
 		-m 'integration ${TEST_STRING}' \
 		.
 
-integration-test-docker: docker-run-webservice
-	@echo Implement Me!
+integration-test-docker: build-test-docker stop-webservice docker-run-webservice
+	@docker run \
+		--rm \
+		${INTERACTIVE} \
+		--env "ENVIRONMENT=docker" \
+		--name ${TEST_CONTAINER_NAME} \
+		--link ${APP_CONTAINER_NAME} \
+		${TEST_IMAGE_NAME} \
+			--durations=10 \
+			-x \
+			-s \
+			-m 'integration ${TEST_STRING}' \
+			${PDB} \
+			/test/python
 
 # Linting
 
@@ -120,6 +142,7 @@ clean:
 	@echo Cleaning Make Targets...
 	@rm -f run-build
 	@rm -f docker-build-app
+	@rm -f build-test-docker
 	@echo Cleaned Make Targets.
 	@echo Removing Build Targets...
 	@rm -rf ${ROOT_DIRECTORY}/build
