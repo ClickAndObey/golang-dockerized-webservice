@@ -10,10 +10,11 @@ VERSION := $(MAJOR_VERSION).$(MINOR_VERSION).$(BUILD_VERSION)
 PACKAGE_PREFIX := github.com/clickandobey/golang-dockerized-webservice
 ORGANIZATION := clickandobey
 SERVICE_NAME := golang-dockerized-webservice
+PACKAGE_NAME := go-helloworld-webservice
 
 APP_IMAGE_NAME := ${ORGANIZATION}-${SERVICE_NAME}-app
 GITHUB_REPO := "docker.pkg.github.com"
-APP_REPO_IMAGE_NAME := ${GITHUB_REPO}/${ORGANIZATION}/${SERVICE_NAME}/webservice:${VERSION}
+APP_REPO_IMAGE_NAME := ${GITHUB_REPO}/${ORGANIZATION}/${SERVICE_NAME}/${PACKAGE_NAME}:${VERSION}
 APP_PORT := 9001
 APP_CONTAINER_NAME := ${APP_IMAGE_NAME}
 
