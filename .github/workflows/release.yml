@@ -41,7 +41,7 @@ jobs:
       run: |
         make docker-run-webservice
   performRelease:
-    needs: [lintMarkdown, lintGo, unitTest, integrationTest, runApi]
+    needs: [lintMarkdown, lintGo, unitTest, integrationTest, runWebservice]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
