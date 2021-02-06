@@ -1,6 +1,7 @@
-# golang-dockerized-webservice
+# Golang Dockerized Webservice
 
-Example golang webservice that is dockerized, and easily loads up in to GoLand.
+Example golang webservice that is dockerized, and easily loads up in to GoLand. It uses the "built-in" http module for
+the webserver, and [Pytest] and [Pipenv] for testing.
 
 ## Quick Start
 
@@ -12,3 +13,6 @@ Example golang webservice that is dockerized, and easily loads up in to GoLand.
 * [Development](docs/development.md)
 * [SRE](docs/sre.md)
 * [Testing](docs/testing.md)
+
+[Pytest]: https://docs.pytest.org/en/stable/
+[Pipenv]: https://pypi.org/project/pipenv/

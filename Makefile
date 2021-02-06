@@ -47,7 +47,7 @@ run-webservice: run-build
 
 # Docker App Targets
 
-docker-build-app: docker/Dockerfile.app
+docker-build-app: $(shell find . -name "*.go") $(shell find . -name "go.mod") docker/Dockerfile.app
 	@docker build \
 		-t ${APP_IMAGE_NAME} \
 		-f docker/Dockerfile.app \
