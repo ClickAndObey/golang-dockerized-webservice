@@ -13,8 +13,8 @@ SERVICE_NAME := golang-dockerized-webservice
 PACKAGE_NAME := go-helloworld-webservice
 
 APP_IMAGE_NAME := ${ORGANIZATION}-${SERVICE_NAME}-app
-GITHUB_REPO := "docker.pkg.github.com"
-APP_REPO_IMAGE_NAME := ${GITHUB_REPO}/${ORGANIZATION}/${SERVICE_NAME}/${PACKAGE_NAME}:${VERSION}
+GITHUB_REPO := "ghcr.io"
+APP_REPO_IMAGE_NAME := ${GITHUB_REPO}/${ORGANIZATION}/${SERVICE_NAME}:${VERSION}
 APP_PORT := 9001
 APP_CONTAINER_NAME := ${APP_IMAGE_NAME}
 
@@ -168,4 +168,4 @@ update-python-dependencies:
 	pipenv lock
 
 github-docker-login:
-	@echo ${GITHUB_TOKEN} | docker login https://${GITHUB_REPO} -u ${GITHUB_USER} --password-stdin
+	@echo ${CR_PAT} | docker login ${GITHUB_REPO} -u ${GITHUB_USER} --password-stdin
