@@ -14,7 +14,7 @@ func TestGetConfiguration(t *testing.T) {
 		t.Errorf("Expected version of 1.0.0, got %s", configuration.Version)
 	}
 
-	if configuration.Config.Debug {
-		t.Errorf("Expected debug of false, got %t", configuration.Config.Debug)
+	if !configuration.Config.Debug {
+		t.Errorf("Expected debug of true, got %t", configuration.Config.Debug)
 	}
 }
