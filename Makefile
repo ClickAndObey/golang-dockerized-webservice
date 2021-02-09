@@ -46,14 +46,16 @@ run-build: $(shell find . -name "*.go") $(shell find . -name "go.mod")
 # Local App Targets
 
 run-webservice: run-build
-	@${ROOT_DIRECTORY}/build/golang-dockerized-webservice
+	@export ENVIRONMENT=localhost; \
+	export CONFIGURATION_DIRECTORY=`pwd`/configuration; \
+	${ROOT_DIRECTORY}/build/golang-dockerized-webservice
 
 # Docker App Targets
 
-docker-build-app: $(shell find . -name "*.go") $(shell find . -name "go.mod") docker/Dockerfile.app
+docker-build-app: $(shell find . -name "*.go") $(shell find . -name "go.mod") docker/app/Dockerfile.app
 	@docker build \
 		-t ${APP_IMAGE_NAME} \
-		-f docker/Dockerfile.app \
+		-f docker/app/Dockerfile.app \
 		.
 	@touch docker-build-app
 
@@ -62,6 +64,7 @@ docker-run-webservice: docker-build-app stop-webservice
 		--rm \
 		${DETACH} \
 		${INTERACTIVE} \
+		--env "ENVIRONMENT=docker" \
 		--name ${APP_CONTAINER_NAME} \
 		-p ${APP_PORT}:9001 \
 		${APP_IMAGE_NAME}
@@ -83,11 +86,18 @@ test: unit-test integration-test
 test-docker: unit-test-docker integration-test-docker
 
 unit-test:
-	@go test ${PACKAGE_PREFIX}/... -cover
+	@export ENVIRONMENT=test; \
+	export VERSION=1.0.0 \
+	export CONFIGURATION_DIRECTORY=`pwd`/configuration; \
+	go test ${PACKAGE_PREFIX}/... -cover
 
 unit-test-docker:
 	@docker run \
 		--rm \
+		${INTERACTIVE} \
+		--env "ENVIRONMENT=test" \
+		--env "VERSION=1.0.0" \
+		--env "CONFIGURATION_DIRECTORY=/test/configuration" \
 		-v `pwd`:/test \
 		golang:1.15-buster \
 			/bin/bash -c \

@@ -10,7 +10,13 @@ RUN go build -o /build/output/webservice
 
 FROM golang:1.15-buster
 
-WORKDIR /webservice
+ENV VERSION=1.0.0
+ENV APP_NAME=webservice
+
+WORKDIR /${APP_NAME}
+
+COPY configuration /configuration
+COPY docker/app/run_webservice.sh /${APP_NAME}/run_webservice.sh
 
 COPY --from=build-base /build/output/webservice /webservice/golang-dockerized-webservice
 
